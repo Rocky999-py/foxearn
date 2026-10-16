@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="theme-color" content="#070d1b"/>
+<title>FOX EARN — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/assets/css/style.css"/>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<div id="status-banner" class="status-banner" hidden><span id="status-banner-text"></span></div>
+<div id="app" class="app">
+<header class="app-header">
+  <div class="brand">
+    <svg class="brand-fox" viewBox="0 0 200 200" aria-hidden="true">
+      <polygon points="40,72 28,14 86,50" fill="#ff8a3d"/><polygon points="160,72 172,14 114,50" fill="#ff8a3d"/>
+      <path d="M100 40 L166 76 L150 136 L100 172 L50 136 L34 76 Z" fill="#ff8a3d"/>
+      <path d="M100 106 L136 131 L100 168 L64 131 Z" fill="#fff3e6"/>
+      <circle cx="72" cy="101" r="8.5" fill="#0b1220"/><circle cx="128" cy="101" r="8.5" fill="#0b1220"/>
+    </svg>
+    <span class="brand-name">FOX<span class="brand-name-accent">ADMIN</span></span>
+  </div>
+</header>
+<main id="view" class="view">
+  <div id="admin-auth-error" class="card" hidden>
+    <p class="card-title">Access denied</p>
+    <p class="card-hint mt-8" id="admin-auth-error-msg">Only authorized administrators may use this panel.</p>
+  </div>
+  <div id="admin-app" hidden>
+    <h2 class="screen-title">Admin</h2>
+    <div class="tabs">
+      <button class="tab is-active" data-atab="stats" type="button">Stats</button>
+      <button class="tab" data-atab="activations" type="button">Wallet</button>
+      <button class="tab" data-atab="withdrawals" type="button">Withdrawals</button>
+      <button class="tab" data-atab="settings" type="button">Settings</button>
+    </div>
+    <div class="tab-panel" data-apanel="stats">
+      <div class="card"><p class="card-title">Statistics</p><ul class="kv-list" id="admin-stats"></ul></div>
+      <div class="card"><p class="card-title">Audit log</p><ul class="leader-list" id="admin-audit"><li class="empty-state">None.</li></ul></div>
+    </div>
+    <div class="tab-panel" data-apanel="activations" hidden>
+      <div class="card">
+        <div class="row-between">
+          <p class="card-title">Activations</p>
+          <select id="admin-wa-status" class="text-input">
+            <option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <ul class="leader-list" id="admin-wa"><li class="empty-state">None.</li></ul>
+      </div>
+    </div>
+    <div class="tab-panel" data-apanel="withdrawals" hidden>
+      <div class="card"><p class="card-title">Pending withdrawals</p><ul class="leader-list" id="admin-withdrawals"><li class="empty-state">None.</li></ul></div>
+    </div>
+    <div class="tab-panel" data-apanel="settings" hidden>
+      <div class="card">
+        <p class="card-title">Withdrawal timer</p>
+        <label class="field-label mt-12" for="admin-timer-target">Target date/time</label>
+        <input id="admin-timer-target" class="text-input" type="datetime-local"/>
+        <div class="row-between mt-12">
+          <label><input type="checkbox" id="admin-timer-enabled"/><span> Timer enabled</span></label>
+          <button class="btn btn-primary btn-compact" id="admin-timer-save" type="button">Save timer</button>
+        </div>
+      </div>
+      <div class="card">
+        <p class="card-title">Add Wallet</p>
+        <label class="field-label mt-12" for="admin-wa-enabled">Section</label>
+        <select id="admin-wa-enabled" class="text-input">
+          <option value="0">Locked</option><option value="1">Unlocked</option>
+        </select>
+        <label class="field-label mt-12" for="admin-wa-fee">Fee (USD)</label>
+        <input id="admin-wa-fee" class="text-input" type="number" min="0" step="0.01"/>
+        <button class="btn btn-primary mt-12" id="admin-wa-save" type="button">Save</button>
+      </div>
+      <div class="card">
+        <p class="card-title">Referral settings</p>
+        <label class="field-label mt-12" for="admin-ref-min">Minimum valid referrals</label>
+        <input id="admin-ref-min" class="text-input" type="number" min="1" step="1"/>
+        <label class="field-label mt-12" for="admin-ref-reward">Reward per milestone (USD)</label>
+        <input id="admin-ref-reward" class="text-input" type="number" min="0" step="0.01"/>
+        <button class="btn btn-primary mt-12" id="admin-ref-save" type="button">Save</button>
+      </div>
+      <div class="card">
+        <p class="card-title">All settings</p>
+        <ul class="kv-list" id="admin-settings"></ul>
+        <button id="admin-settings-reload" class="btn btn-ghost mt-12" type="button">Reload</button>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+<div id="toast-host" class="toast-host" aria-live="polite"></div>
+<div id="boot-loader" class="boot-loader"><p class="boot-text">Loading admin…</p></div>
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/api.js"></script>
+<script src="/assets/js/telegram.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/admin/admin.js"></script>
+</body>
+</html>

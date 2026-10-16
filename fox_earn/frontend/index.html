@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="theme-color" content="#070d1b"/>
+<title>FOX EARN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/assets/css/style.css"/>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<div id="status-banner" class="status-banner" hidden><span id="status-banner-text"></span></div>
+<div id="app" class="app">
+<header class="app-header">
+  <button id="back-btn" class="icon-btn" type="button" aria-label="Back" hidden>
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="brand">
+    <svg class="brand-fox" viewBox="0 0 200 200" aria-hidden="true">
+      <polygon points="40,72 28,14 86,50" fill="#ff8a3d"/>
+      <polygon points="160,72 172,14 114,50" fill="#ff8a3d"/>
+      <path d="M100 40 L166 76 L150 136 L100 172 L50 136 L34 76 Z" fill="#ff8a3d"/>
+      <path d="M100 106 L136 131 L100 168 L64 131 Z" fill="#fff3e6"/>
+      <circle cx="72" cy="101" r="8.5" fill="#0b1220"/>
+      <circle cx="128" cy="101" r="8.5" fill="#0b1220"/>
+    </svg>
+    <span class="brand-name">FOX<span class="brand-name-accent">EARN</span></span>
+  </div>
+  <button id="refresh-btn" class="icon-btn" type="button" aria-label="Refresh">
+    <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</header>
+
+<main id="view" class="view">
+<section class="screen" id="screen-home" data-screen="home">
+  <div class="card profile-card">
+    <div class="avatar" id="home-avatar"><span id="home-avatar-fallback">•</span></div>
+    <div class="profile-meta">
+      <p class="profile-hello">Welcome back,</p>
+      <p class="profile-name" id="home-name">—</p>
+      <p class="profile-sub" id="home-username">—</p>
+    </div>
+  </div>
+  <div class="dual-balance">
+    <div class="card balance-card">
+      <p class="balance-label">Coin balance</p>
+      <p class="balance-value"><span id="home-coins">0</span><span class="coin-dot"></span></p>
+      <p class="balance-sub">Earn 1 coin per tap</p>
+    </div>
+    <div class="card balance-card dollar-card">
+      <p class="balance-label">Dollar balance</p>
+      <p class="balance-value dollar-value"><span id="home-dollars">$0.00</span></p>
+      <p class="balance-sub">5,000 coins = $1</p>
+    </div>
+  </div>
+  <div class="tap-zone">
+    <button id="tap-button" class="tap-button" type="button" aria-label="Tap to earn">
+      <span class="tap-ring"></span>
+      <svg class="tap-fox" viewBox="0 0 200 200" aria-hidden="true">
+        <polygon points="40,72 28,14 86,50" fill="#ff8a3d"/><polygon points="160,72 172,14 114,50" fill="#ff8a3d"/>
+        <path d="M100 40 L166 76 L150 136 L100 172 L50 136 L34 76 Z" fill="#ff8a3d"/>
+        <path d="M100 106 L136 131 L100 168 L64 131 Z" fill="#fff3e6"/>
+        <circle cx="72" cy="101" r="8.5" fill="#0b1220"/><circle cx="128" cy="101" r="8.5" fill="#0b1220"/>
+        <path d="M100 146 l11 -9 h-22 z" fill="#0b1220"/>
+      </svg>
+      <span class="tap-caption">TAP TO EARN</span>
+    </button>
+    <div id="tap-floaters" class="tap-floaters" aria-hidden="true"></div>
+  </div>
+  <div class="card">
+    <div class="row-between">
+      <p class="card-title">Total earned</p>
+      <p class="card-hint" id="home-total-earned">0 coins</p>
+    </div>
+    <p class="card-hint mt-8" id="home-tap-queue" hidden></p>
+  </div>
+</section>
+
+<section class="screen" id="screen-tasks" data-screen="tasks" hidden>
+  <h2 class="screen-title">Tasks</h2>
+  <p class="screen-sub">Complete tasks to earn coins.</p>
+  <div id="tasks-list" class="stack"><div class="skeleton-card"></div></div>
+</section>
+
+<section class="screen" id="screen-friends" data-screen="friends" hidden>
+  <h2 class="screen-title">Invite Friends</h2>
+  <div class="card">
+    <p class="card-title">Your invite link</p>
+    <div class="copy-row">
+      <input id="ref-link-input" class="text-input" type="text" readonly value="Loading…"/>
+      <button id="ref-copy-btn" class="btn btn-primary btn-compact" type="button">Copy</button>
+    </div>
+    <div class="row-between mt-12">
+      <p class="card-hint">Valid referrals</p>
+      <p class="ref-count-badge" id="ref-count-text">0</p>
+    </div>
+    <p class="card-hint mt-8" id="ref-eligibility-text">—</p>
+  </div>
+  <div class="card">
+    <p class="card-title">Rewards</p>
+    <p class="card-hint">Claim $10 at each milestone. Unlocks after 3 valid referrals.</p>
+    <ul class="milestone-claim-list" id="ref-milestones"></ul>
+  </div>
+</section>
+
+<section class="screen" id="screen-wallet" data-screen="wallet" hidden>
+  <h2 class="screen-title">Wallet</h2>
+  <div class="tabs" id="wallet-tabs">
+    <button class="tab is-active" data-tab="add" type="button">Add Wallet</button>
+    <button class="tab" data-tab="withdraw" type="button">Withdraw</button>
+  </div>
+  <div class="tab-panel" data-panel="add">
+    <div id="wa-locked" class="card">
+      <div class="lock-banner">
+        <span class="lock-icon">🔒</span>
+        <div>
+          <p class="card-title">Add Wallet — <span id="wa-fee-header">$0.00 USD</span> Fee</p>
+          <p class="card-hint mt-4">This section is currently locked by the administrator.</p>
+        </div>
+      </div>
+    </div>
+    <div id="wa-enabled" hidden>
+      <div class="card">
+        <p class="card-title">Add Wallet — <span id="wa-fee-header2">$0.00 USD</span> Fee</p>
+        <p class="card-hint mt-8">Choose a payment method below.</p>
+      </div>
+      <div class="pay-methods" id="wa-methods"></div>
+      <div id="wa-form-wrap" class="card" hidden>
+        <div class="row-between">
+          <p class="card-title" id="wa-form-title">Complete payment</p>
+          <span class="pill pill-amber" id="wa-status-pill">pending</span>
+        </div>
+        <div class="deposit-instructions" id="wa-instructions"></div>
+        <label class="field-label mt-12">Transaction screenshot</label>
+        <label class="upload-zone" id="wa-upload-zone">
+          <input id="wa-screenshot" type="file" accept="image/png,image/jpeg,image/webp"/>
+          <span class="upload-icon">🖼️</span>
+          <span class="upload-text" id="wa-upload-text">Tap to attach a screenshot</span>
+          <span class="upload-hint">PNG / JPG / WEBP, up to 5 MB</span>
+        </label>
+        <div id="wa-preview-wrap" class="upload-preview" hidden>
+          <img id="wa-preview-img" alt=""/>
+          <button id="wa-preview-remove" class="upload-remove" type="button" aria-label="Remove">✕</button>
+        </div>
+        <label class="field-label mt-12" for="wa-txref">Transaction reference (optional)</label>
+        <input id="wa-txref" class="text-input" type="text" placeholder="TX ID" autocomplete="off"/>
+        <div id="wa-error" class="form-error" hidden></div>
+        <button id="wa-submit" class="btn btn-primary mt-12" type="button">Confirm payment</button>
+        <button id="wa-cancel" class="btn btn-ghost mt-8" type="button">Cancel</button>
+      </div>
+      <div class="card">
+        <p class="card-title">My activation requests</p>
+        <ul class="leader-list" id="wa-history"><li class="empty-state">No requests yet.</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" data-panel="withdraw" hidden>
+    <div class="card">
+      <div class="row-between">
+        <p class="card-title">Withdrawal window</p>
+        <span class="pill pill-cyan" id="wd-window-state">—</span>
+      </div>
+      <div class="timer-grid">
+        <div class="timer-cell"><span class="timer-num" id="tm-days">00</span><span class="timer-label">Days</span></div>
+        <div class="timer-cell"><span class="timer-num" id="tm-hours">00</span><span class="timer-label">Hours</span></div>
+        <div class="timer-cell"><span class="timer-num" id="tm-minutes">00</span><span class="timer-label">Minutes</span></div>
+        <div class="timer-cell"><span class="timer-num" id="tm-seconds">00</span><span class="timer-label">Seconds</span></div>
+      </div>
+      <p class="card-hint mt-8" id="wd-timer-note">—</p>
+    </div>
+    <div class="card balance-card">
+      <p class="balance-label">Withdrawable balance</p>
+      <p class="balance-value dollar-value"><span id="wd-available">$0.00</span></p>
+      <div class="balance-split">
+        <div><p class="mini-label">Coins</p><p class="mini-value" id="wd-coins">0</p></div>
+        <div><p class="mini-label">Wallet</p><p class="mini-value" id="wd-wallet-status">—</p></div>
+        <div><p class="mini-label">Min</p><p class="mini-value" id="wd-min">$0.00</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <p class="card-title">Request withdrawal</p>
+      <label class="field-label mt-12" for="wd-method">Method</label>
+      <select id="wd-method" class="text-input"></select>
+      <label class="field-label mt-12" for="wd-amount">Amount (USD)</label>
+      <input id="wd-amount" class="text-input" type="number" min="0" step="0.01" placeholder="0.00"/>
+      <label class="field-label mt-12" for="wd-destination">Destination</label>
+      <input id="wd-destination" class="text-input" type="text" placeholder="Wallet address / Pay ID" autocomplete="off"/>
+      <p class="card-hint mt-8" id="wd-eligibility">—</p>
+      <div id="wd-error" class="form-error" hidden></div>
+      <button id="wd-submit" class="btn btn-primary mt-12" type="button">Submit withdrawal request</button>
+    </div>
+    <div class="card">
+      <p class="card-title">Withdrawal history</p>
+      <ul class="leader-list" id="wd-list"><li class="empty-state">No requests yet.</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="screen-profile" data-screen="profile" hidden>
+  <h2 class="screen-title">Profile</h2>
+  <div class="card profile-card">
+    <div class="avatar avatar-lg" id="profile-avatar"><span id="profile-avatar-fallback">•</span></div>
+    <div class="profile-meta">
+      <p class="profile-name" id="profile-name">—</p>
+      <p class="profile-sub" id="profile-username">—</p>
+      <p class="profile-sub" id="profile-id">—</p>
+    </div>
+  </div>
+  <div class="card balance-card">
+    <p class="balance-label">Balances</p>
+    <div class="balance-split">
+      <div><p class="mini-label">Coins</p><p class="mini-value" id="profile-coins">0</p></div>
+      <div><p class="mini-label">Dollars</p><p class="mini-value" id="profile-dollars">$0.00</p></div>
+      <div><p class="mini-label">Referrals</p><p class="mini-value" id="profile-refs">0</p></div>
+    </div>
+  </div>
+  <div class="card">
+    <p class="card-title">Wallet</p>
+    <button class="list-btn wallet-entry" type="button" id="open-wallet-btn">
+      <span>💳 Open Wallet</span>
+      <span class="wallet-entry-status" id="profile-wallet-status">Inactive</span>
+    </button>
+  </div>
+  <div class="card">
+    <p class="card-title">More</p>
+    <button class="list-btn" type="button" data-goto="transactions">📜 Transaction history</button>
+    <button class="list-btn" type="button" id="reload-app-btn">🔄 Reload app</button>
+  </div>
+  <p class="disclaimer">Coins are internal points. Dollar balances are internal ledger entries.</p>
+</section>
+
+<section class="screen" id="screen-transactions" data-screen="transactions" hidden>
+  <h2 class="screen-title">Transactions</h2>
+  <ul class="tx-list" id="tx-list"><li class="empty-state">Loading…</li></ul>
+  <button id="tx-more-btn" class="btn btn-ghost mt-12" type="button" hidden>Load more</button>
+</section>
+</main>
+
+<nav class="bottom-nav nav-4" id="bottom-nav" aria-label="Main navigation">
+  <button class="nav-btn is-active" type="button" data-nav="home"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg><span>Home</span></button>
+  <button class="nav-btn" type="button" data-nav="tasks"><svg viewBox="0 0 24 24"><path d="M9 5h11M9 12h11M9 19h11M4 5l1.4 1.4L8 3.8M4 12l1.4 1.4L8 10.8M4 19l1.4 1.4L8 17.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tasks</span></button>
+  <button class="nav-btn" type="button" data-nav="friends"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16.5 5.2a3.2 3.2 0 0 1 0 6M18 20a6.5 6.5 0 0 0-2-4.7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span>Friends</span></button>
+  <button class="nav-btn" type="button" data-nav="profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span>Profile</span></button>
+</nav>
+</div>
+
+<div id="toast-host" class="toast-host" aria-live="polite"></div>
+<div id="boot-loader" class="boot-loader">
+  <svg class="boot-fox" viewBox="0 0 200 200">
+    <polygon points="40,72 28,14 86,50" fill="#ff8a3d"/><polygon points="160,72 172,14 114,50" fill="#ff8a3d"/>
+    <path d="M100 40 L166 76 L150 136 L100 172 L50 136 L34 76 Z" fill="#ff8a3d"/>
+    <path d="M100 106 L136 131 L100 168 L64 131 Z" fill="#fff3e6"/>
+    <circle cx="72" cy="101" r="8.5" fill="#0b1220"/><circle cx="128" cy="101" r="8.5" fill="#0b1220"/>
+  </svg>
+  <p class="boot-text">Starting FOX EARN…</p>
+</div>
+
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/api.js"></script>
+<script src="/assets/js/telegram.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/home.js"></script>
+<script src="/assets/js/tasks.js"></script>
+<script src="/assets/js/referrals.js"></script>
+<script src="/assets/js/wallet.js"></script>
+<script src="/assets/js/profile.js"></script>
+<script src="/assets/js/app.js"></script>
+</body>
+</html>
